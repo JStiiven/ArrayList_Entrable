@@ -1,0 +1,161 @@
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+public class ProfesoresEstudiantes {
+    private ArrayList<String> listaProfesores;
+    private ArrayList<ArrayList<String>> listaGeneralEstudiantes;
+
+    public ProfesoresEstudiantes() {
+        listaProfesores = new ArrayList<>();
+        listaGeneralEstudiantes = new ArrayList<>();
+    }
+
+    public void iniciar() {
+        int opcion;
+        do {
+            String menu = "MENU:\n"
+                        + "1. Registrar profesores\n"
+                        + "2. Registrar estudiantes asociados al profesor\n"
+                        + "3. Consultar lista total de profesores y sus estudiantes asociados\n"
+                        + "4. Consultar un profesor e imprimir la lista de estudiantes asociados\n"
+                        + "5. Consultar un profesor e indicar la cantidad de estudiantes asociados\n"
+                        + "6. Consultar un estudiante e indicar cual es su director de grupo\n"
+                        + "7. Salir\n"
+                        + "Seleccione una opción: ";
+            opcion = Integer.parseInt(JOptionPane.showInputDialog(menu));
+
+            switch (opcion) {
+                case 1:
+                    registrarProfesores();
+                    break;
+                case 2:
+                    registrarEstudiantes();
+                    break;
+                case 3:
+                    consultarListaProfesoresYEstudiantes();
+                    break;
+                case 4:
+                    consultaProfesorPorNombre();
+                    break;
+                case 5:
+                    consultaCantidadEstudiantesPorProfesor();
+                    break;
+                case 6:
+                    consultarEstudiante();
+                    break;
+                case 7:
+                    JOptionPane.showMessageDialog(null, "Saliendo...");
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción no válida. Intente de nuevo.");
+            }
+        } while (opcion != 7);
+    }
+
+    private void registrarProfesores() {
+        int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de profesores a registrar:"));
+
+        for (int i = 0; i < cantidad; i++) {
+            String nombreProfesor = JOptionPane.showInputDialog("Ingrese el nombre del profesor " + (i + 1) + ":");
+            if (listaProfesores.contains(nombreProfesor)) {
+                JOptionPane.showMessageDialog(null, "El nombre del profesor ya existe. Intente nuevamente.");
+                i--;
+            } else {
+                listaProfesores.add(nombreProfesor);
+                listaGeneralEstudiantes.add(new ArrayList<>());
+            }
+        }
+    }
+
+    private void registrarEstudiantes() {
+        if (listaProfesores.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Primero debe registrar profesores.");
+            return;
+        }
+
+        for (int i = 0; i < listaProfesores.size(); i++) {
+            String profesor = listaProfesores.get(i);
+            ArrayList<String> listEstudiantes = listaGeneralEstudiantes.get(i);
+
+            int cantidadEstudiantes = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de estudiantes para el profesor " + profesor + ":"));
+
+            for (int j = 0; j < cantidadEstudiantes; j++) {
+                String nombreEstudiante = JOptionPane.showInputDialog("Ingrese el nombre del estudiante " + (j + 1) + ":");
+                if (listEstudiantes.contains(nombreEstudiante)) {
+                    JOptionPane.showMessageDialog(null, "El nombre del estudiante ya existe. Intente nuevamente.");
+                    j--;
+                } else {
+                    listEstudiantes.add(nombreEstudiante);
+                }
+            }
+        }
+    }
+
+    private void consultarListaProfesoresYEstudiantes() {
+        if (listaProfesores.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay profesores registrados.");
+            return;
+        }
+
+        StringBuilder resultado = new StringBuilder();
+        for (int i = 0; i < listaProfesores.size(); i++) {
+            resultado.append("Profesor: ").append(listaProfesores.get(i)).append("\n")
+                     .append("Estudiantes: ").append(String.join(", ", listaGeneralEstudiantes.get(i))).append("\n\n");
+        }
+        JOptionPane.showMessageDialog(null, resultado.toString());
+    }
+
+    private void consultaProfesorPorNombre() {
+        if (listaProfesores.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay profesores registrados.");
+            return;
+        }
+
+        String nombreProfesor = JOptionPane.showInputDialog("Ingrese el nombre del profesor a consultar:");
+
+        if (listaProfesores.contains(nombreProfesor)) {
+            int index = listaProfesores.indexOf(nombreProfesor);
+            JOptionPane.showMessageDialog(null, "Estudiantes del profesor " + nombreProfesor + ": " + String.join(", ", listaGeneralEstudiantes.get(index)));
+        } else {
+            JOptionPane.showMessageDialog(null, "El profesor no se encuentra registrado.");
+        }
+    }
+
+    private void consultaCantidadEstudiantesPorProfesor() {
+        if (listaProfesores.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay profesores registrados.");
+            return;
+        }
+
+        String nombreProfesor = JOptionPane.showInputDialog("Ingrese el nombre del profesor a consultar:");
+
+        if (listaProfesores.contains(nombreProfesor)) {
+            int index = listaProfesores.indexOf(nombreProfesor);
+            JOptionPane.showMessageDialog(null, "Cantidad de estudiantes del profesor " + nombreProfesor + ": " + listaGeneralEstudiantes.get(index).size());
+        } else {
+            JOptionPane.showMessageDialog(null, "El profesor no se encuentra registrado.");
+        }
+    }
+
+    private void consultarEstudiante() {
+        if (listaProfesores.isEmpty() || listaGeneralEstudiantes.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay profesores o estudiantes registrados.");
+            return;
+        }
+
+        String nombreEstudiante = JOptionPane.showInputDialog("Ingrese el nombre del estudiante a consultar:");
+        boolean encontrado = false;
+
+        for (int i = 0; i < listaProfesores.size(); i++) {
+            if (listaGeneralEstudiantes.get(i).contains(nombreEstudiante)) {
+                JOptionPane.showMessageDialog(null, "El estudiante " + nombreEstudiante + " pertenece al profesor " + listaProfesores.get(i));
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(null, "El estudiante no se encuentra registrado.");
+        }
+    }
+}

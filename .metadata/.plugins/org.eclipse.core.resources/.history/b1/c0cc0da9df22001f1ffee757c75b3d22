@@ -1,0 +1,14 @@
+import java.util.ArrayList;
+
+public class Ejercicio {
+
+	public static void main(String[] args) {
+		
+		ArrayList<String> listProfesores = new ArrayList<String>();
+		
+		listProfesores.add("Cristian");
+		listProfesores.add("Germán");
+		listProfesores.add("Hugo");
+	}
+
+}

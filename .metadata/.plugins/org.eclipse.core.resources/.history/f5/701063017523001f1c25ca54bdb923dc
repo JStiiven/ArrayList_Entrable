@@ -1,0 +1,134 @@
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+public class ProfesoresEstudiantes {
+    ArrayList<String> listaProfesores;
+    ArrayList<String> listaEstudiantes;
+    ArrayList<ArrayList<String>> listaGeneralEstudiantes;
+    
+    public ProfesoresEstudiantes () {
+        listaProfesores = new ArrayList<>();
+        listaGeneralEstudiantes = new ArrayList<>();
+    }
+    
+    public void iniciar() {
+        registrarProfesores();
+        registrarEstudiantes();
+        consultarListaProfesoresYEstudiantes();
+        consultaProfesorPorNombre();
+        consultaCantidadEstudiantesPorProfesores();
+        consultarEstudiante();
+    }
+
+    private void registrarProfesores() {
+        System.out.println("\n<<<< Registro de Profesores >>>>");
+        int cant = obtenerNumeroValido("Ingrese la cantidad de profesores");
+        
+        for (int i = 0; i < cant; i++) {
+            String nombreProfesor = JOptionPane.showInputDialog("Nombre del profesor " + (i + 1));
+            listaProfesores.add(nombreProfesor);
+        }
+        System.out.println("Registro de profesores exitoso!\n");
+    }
+
+    private void registrarEstudiantes() {
+        System.out.println("\n<<<< Registro de estudiantes >>>>");
+        for (String profesor : listaProfesores) {
+            JOptionPane.showMessageDialog(null, "Ingrese los estudiantes para el profesor " + profesor);
+            
+            listaEstudiantes = new ArrayList<>();
+            int cant = obtenerNumeroValido("Cantidad de estudiantes");
+            
+            for (int j = 0; j < cant; j++) {
+                String nombreEst = JOptionPane.showInputDialog("Ingrese el nombre del estudiante " + (j + 1));
+                listaEstudiantes.add(nombreEst);
+            }
+            listaGeneralEstudiantes.add(listaEstudiantes);
+        }
+        System.out.println("Registro de estudiantes exitoso!\n");
+    }
+
+    private int obtenerNumeroValido(String mensaje) {
+        while (true) {
+            try {
+                String input = JOptionPane.showInputDialog(mensaje);
+                int numero = Integer.parseInt(input);
+                if (numero >= 0) {
+                    return numero;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un número positivo.");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Entrada inválida. Por favor, ingrese un número.");
+            }
+        }
+    }
+
+    private void consultarListaProfesoresYEstudiantes() {
+        System.out.println("\n<<<< Lista de Profesores y Estudiantes >>>>");
+        for (int i = 0; i < listaGeneralEstudiantes.size(); i++) {
+            ArrayList<String> listaTemporal = listaGeneralEstudiantes.get(i);
+            System.out.println("Profesor: " + listaProfesores.get(i) + " = ");
+            System.out.println("[");
+            for (int j = 0; j < listaTemporal.size(); j++) {
+                System.out.print(listaTemporal.get(j));
+                if (j < listaTemporal.size() - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println("]\n");
+        }
+    }
+
+    private void consultaProfesorPorNombre() {
+        System.out.println("\n<<<<< Consulta de Profesor >>>>> \n");
+        String nombre = JOptionPane.showInputDialog("Ingrese el nombre del profesor");
+        
+        if (listaProfesores.contains(nombre)) {
+            int posicion = listaProfesores.indexOf(nombre);
+            ArrayList<String> listaEstudiantesTemporal = listaGeneralEstudiantes.get(posicion);
+            
+            System.out.println("Profesor: " + nombre + " = ");
+            System.out.println("[");
+            for (int i = 0; i < listaEstudiantesTemporal.size(); i++) {
+                System.out.print(listaEstudiantesTemporal.get(i));
+                if (i < listaEstudiantesTemporal.size() - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println("]\n");
+        } else {
+            System.out.println("No se encuentra el profesor " + nombre + "\n");
+        }
+    }
+
+    private void consultaCantidadEstudiantesPorProfesores() {
+        System.out.println("\n<<<< Consulta la cantidad de estudiantes de Profesores >>>>\n");
+        String nombre = JOptionPane.showInputDialog("Ingrese el nombre del profesor para saber la cantidad de estudiantes asociados");
+        
+        if (listaProfesores.contains(nombre)) {
+            int posicion = listaProfesores.indexOf(nombre);
+            ArrayList<String> listaEstudiantesTemporal = listaGeneralEstudiantes.get(posicion);
+            System.out.println("La cantidad de estudiantes asociados al profesor " + nombre + " es " + listaEstudiantesTemporal.size());
+        } else {
+            System.out.println("No se encuentra el profesor " + nombre + "\n");
+        }
+    }
+
+    private void consultarEstudiante() {
+        System.out.println("\n<<<< Consulta de Estudiante >>>>\n");
+        String nombre = JOptionPane.showInputDialog("Ingrese el nombre del estudiante a consultar");
+        
+        boolean encontrado = false;
+        for (int i = 0; i < listaGeneralEstudiantes.size(); i++) {
+            ArrayList<String> listaTemporal = listaGeneralEstudiantes.get(i);
+            if (listaTemporal.contains(nombre)) {
+                System.out.println("El nombre " + nombre + " pertenece al grupo de " + listaProfesores.get(i));
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encuentra el nombre " + nombre + " en ningún grupo.");
+        }
+    }

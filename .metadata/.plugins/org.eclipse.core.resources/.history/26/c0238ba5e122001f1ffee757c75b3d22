@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+public class Ejercicio {
+
+	public static void main(String[] args) {
+		
+		ArrayList<String> listProfesores = new ArrayList<String>();
+		
+		listProfesores.add("Cristian");
+		listProfesores.add("Germán");
+		listProfesores.add("Hugo");
+		
+		ArrayList<String> listEstudiantes;
+		
+		for (int i = 0; i < listProfesores.size(); i++) {
+			JOptionPane.showMessageDialog(null, "Ingrese los estudiantes"
+					+ " para el profesor "+listProfesores);
+			
+			listEstudiantes = new ArrayList<String>();
+			
+			int cant=Integer.parseInt(JOptionPane.showInputDialog("Cantidad de estudiantes"));
+			
+			for (int j = 0; j < args.length; j++) {
+				String nombreEstudiante=JOptionPane.showInputDialog("Nombre del estudiante "+(i+1));
+				listEstudiantes.add(nombreEstudiante);
+			}
+			System.out.println("Profesor "+listProfesores.get(i)+" = ");
+			System.out.println(listEstudiantes);
+		}
+	}
+
+}

@@ -1,0 +1,95 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.JOptionPane;
+
+public class ProfesoresEstudiantes {
+	ArrayList<String> listaProfesores;
+	ArrayList<String> listaEstudiantes;
+	ArrayList<ArrayList<String>> listaGeneralEstudiantes;
+	
+	public ProfesoresEstudiantes () {
+		listaProfesores=new ArrayList<String>();
+		listaGeneralEstudiantes=new ArrayList<>();
+	
+	}
+	
+	public void iniciar() {
+		registrarProfesores();
+		registrarEstudiantes();
+		consultarListaProfesoresYEstudiantes();
+		consultaProfesorPorNombre();
+		consultaCantidadEstudiantesPorProfesores();
+		consultarEstudiante();
+	}
+
+	private void registrarProfesores() {
+		System.out.println("\n<<<< Registro de Profesores>>>>");
+		int cant=Integer.parseInt(JOptionPane.showInputDialog("Ingrese la Cantidad de profesores"));
+		
+		for (int i = 0; i < cant; i++) {
+			
+			String nombreProfesor=JOptionPane.showInputDialog("Nombre del profesor "+(i+1));
+			listaProfesores.add(nombreProfesor);
+		}
+		System.out.println("Registro de profesores exitoso!\n");
+	}
+
+	private void registrarEstudiantes() {
+		System.out.println("\n<<<<Registro de estudiantes>>>>");
+		for (int i = 0; i < listaProfesores.size(); i++) {
+			JOptionPane.showMessageDialog(null, "Ingrese los estudiantes"
+					+ "para el profesor "+(listaProfesores.get(i)));
+			
+			listaEstudiantes=new ArrayList<String>();
+			
+			int cant=Integer.parseInt(JOptionPane.showInputDialog("Cantidad de estudiantes"));
+			
+			for (int j = 0; j < cant; j++) {
+				
+				String nombreEst=JOptionPane.showInputDialog("Ingese el nombre del estudiantes "+(j+1));
+				
+				listaEstudiantes.add(nombreEst);
+			}
+			listaGeneralEstudiantes.add(listaEstudiantes);
+		}
+		System.out.println("Registro de estudiantes Exitoso!\n");	
+	}
+	private void consultarListaProfesoresYEstudiantes() {
+		System.out.println("\n<<<< Lista de Profesores y Estudiantes >>>>");
+		ArrayList<String> listaTemporal;
+		
+		for (int i = 0; i < listaGeneralEstudiantes.size(); i++) {
+			listaTemporal=listaGeneralEstudiantes.get(i);
+			System.out.println("Profesor: "+listaProfesores.get(i)+" = ");
+			System.out.println("[");
+			
+			for (int j = 0; j < listaTemporal.size(); j++) {
+				System.out.println(listaTemporal.get(j));
+				if (j<listaTemporal.size()-1) {
+					System.out.println(",");
+				}
+			}
+			System.out.println("]\n");
+		}
+	}
+	private void consultaProfesorPorNombre() {
+		System.out.println("\n<<<<< Consulta de Profesor >>>>> \n");
+		String nombre=JOptionPane.showInputDialog("Ingrese el nombre del profesor");
+		
+		if (listaProfesores.contains(nombre)) {
+			int posicion=listaProfesores.indexOf(nombre);
+			ArrayList<String> listaEstudiantesTemporal=listaGeneralEstudiantes.get(posicion);
+			
+			System.out.println("profesor: "+nombre+" = ");
+			System.out.println("[");
+			for (int i = 0; i < listaEstudiantesTemporal.size(); i++) {
+				System.out.println(listaEstudiantesTemporal.get(i));
+				if (i<listaEstudiantesTemporal.size()-1) {
+					System.out.println(",");
+				}
+			}
+			System.out.println("]\n");
+		}
+	}
+}

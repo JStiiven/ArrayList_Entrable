@@ -1,0 +1,25 @@
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+public class Ejercicio {
+
+	public static void main(String[] args) {
+		
+		ArrayList<String> listProfesores = new ArrayList<String>();
+		
+		listProfesores.add("Cristian");
+		listProfesores.add("Germán");
+		listProfesores.add("Hugo");
+		
+		ArrayList<String> listEstudiantes;
+		
+		for (int i = 0; i < listProfesores.size(); i++) {
+			JOptionPane.showMessageDialog(null, "Ingrese los estudiantes"
+					+ " para el profesor "+listProfesores);
+			
+			listEstudiantes = new ArrayList<String>();
+		}
+	}
+
+}
